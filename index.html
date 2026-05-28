@@ -2,127 +2,757 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FBFAF7">
 <title>Maison Jenn</title>
+<script type="text/javascript" nonce="fd3455cd015641e980821b38fcb" src="//local.adguard.org?ts=1779953154404&amp;type=content-script&amp;dmn=claude.ai&amp;url=https%3A%2F%2Fclaude.ai%2Fdesign%2Fv1%2Fdesign%2Fprojects%2F75c9dcce-b5c9-4b92-b39e-ab182eef6a40%2Fdownload%3Fpath%3DMaison%2520Jenn.html&amp;app=company.thebrowser.dia&amp;css=2&amp;js=1&amp;rel=1&amp;rji=1&amp;sbe=1"></script><script type="text/javascript" nonce="fd3455cd015641e980821b38fcb" src="//local.adguard.org?ts=1779953154404&amp;name=AdGuard%20Extra&amp;type=user-script"></script><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;0,6..96,700;1,6..96,400;1,6..96,500;1,6..96,700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:430px;margin:0 auto;min-height:100vh}
-.header{padding:2rem 1.5rem 1rem;text-align:center;border-bottom:0.5px solid #e5e5e5}
-.brand{font-size:10px;letter-spacing:0.25em;color:#999;text-transform:uppercase;margin-bottom:6px}
-.title{font-size:30px;font-weight:500;color:#111;letter-spacing:-0.03em;font-family:Georgia,serif}
-.tagline{font-size:12px;color:#aaa;margin-top:4px;letter-spacing:0.05em}
-.cats{display:flex;gap:8px;padding:1rem 1.5rem 0.5rem;overflow-x:auto}
+:root{
+  --paper:#FBFAF7;
+  --ink:#141312;
+  --ink-soft:#6B6864;
+  --ink-faint:#A8A39B;
+  --hair:#1B1A18;
+  --hair-soft:rgba(20,19,18,0.14);
+  --tint-warm:#FBFAF7;
+  --tint-cool:#FBFAF7;
+  --accent:#141312;
+}
+html[data-mode="night"]{
+  --paper:#0E0E0D;
+  --ink:#F4F1EB;
+  --ink-soft:#A8A39B;
+  --ink-faint:#6B6864;
+  --hair:#F4F1EB;
+  --hair-soft:rgba(244,241,235,0.16);
+  --accent:#F4F1EB;
+}
+html[data-tint="warm"]{ --paper:#FBF7F0; }
+html[data-tint="cool"]{ --paper:#F6F8FA; }
+html[data-mode="night"][data-tint="warm"]{ --paper:#13110D; }
+html[data-mode="night"][data-tint="cool"]{ --paper:#0C0E10; }
+
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  font-weight:400;
+  font-size:14px;
+  line-height:1.45;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  transition:background-color 700ms cubic-bezier(.22,.61,.36,1), color 400ms ease;
+  overflow-x:hidden;
+}
+.app{
+  max-width:430px;
+  margin:0 auto;
+  min-height:100vh;
+  position:relative;
+  padding-bottom:48px;
+}
+
+/* ——— utility ——— */
+.serif{font-family:'Bodoni Moda',Georgia,serif;font-feature-settings:'liga' 1,'kern' 1;}
+.italic{font-style:italic}
+.mono{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.eyebrow{
+  font-size:9.5px;letter-spacing:0.28em;text-transform:uppercase;
+  color:var(--ink-soft);font-weight:500;
+}
+.hair{height:1px;background:var(--hair);opacity:0.85}
+.hair-soft{height:1px;background:var(--hair-soft)}
+
+/* ——— top bar ——— */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 22px 0;
+}
+.iconbtn{
+  width:34px;height:34px;display:grid;place-items:center;
+  background:transparent;border:none;cursor:pointer;color:var(--ink);
+  border-radius:50%;
+}
+.iconbtn:active{background:var(--hair-soft)}
+.iconbtn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1}
+.topbar .stamp{
+  font-size:9.5px;letter-spacing:0.32em;text-transform:uppercase;color:var(--ink-soft);
+}
+
+/* ——— masthead ——— */
+.mast{
+  padding:22px 22px 4px;text-align:center;position:relative;
+}
+.mast-meta{
+  display:flex;align-items:center;justify-content:center;gap:14px;
+  margin:8px 0 18px;
+}
+.mast-meta .line{flex:0 0 38px;height:1px;background:var(--hair);opacity:0.6}
+.greet{
+  font-family:'Bodoni Moda',serif;font-style:italic;font-weight:400;
+  font-size:13.5px;color:var(--ink-soft);
+}
+.wordmark{
+  font-family:'Bodoni Moda',serif;
+  font-weight:500;
+  color:var(--ink);
+  line-height:0.86;
+  letter-spacing:-0.02em;
+}
+.wm-1{font-size:78px;font-weight:500;}
+.wm-2{font-size:78px;font-style:italic;font-weight:400;margin-top:-2px;}
+.mast-foot{
+  display:flex;align-items:center;justify-content:center;gap:14px;
+  margin-top:18px;
+}
+.mast-foot .dot{width:3px;height:3px;border-radius:50%;background:var(--ink-soft)}
+.mast-foot .l,.mast-foot .r{
+  font-size:9.5px;letter-spacing:0.28em;text-transform:uppercase;color:var(--ink-soft);
+}
+
+/* ——— categories ——— */
+.cats-wrap{margin:24px 0 0}
+.cats{
+  display:flex;justify-content:center;gap:0;padding:14px 16px;
+  overflow-x:auto;scrollbar-width:none;
+}
 .cats::-webkit-scrollbar{display:none}
-.tb{flex:0 0 auto;padding:9px 14px;border:0.5px solid #ccc;border-radius:8px;background:transparent;color:#666;font-size:12px;cursor:pointer;letter-spacing:0.03em;white-space:nowrap}
-.tb.on{background:#111;color:#fff;border-color:#111}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:#e5e5e5;margin:0.75rem 1.5rem 2rem}
-.card{background:#fff;padding:1.25rem 1rem 1rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:10px}
-.card:active{background:#f5f5f5}
-.ill{width:72px;height:72px;color:#111}
-.cname{font-size:13px;color:#111;text-align:center;line-height:1.3}
-.ccal{font-size:11px;color:#aaa;text-align:center}
-.overlay{background:#fff;min-height:100vh;display:none;flex-direction:column}
-.back{display:flex;align-items:center;gap:8px;padding:1.25rem 1.5rem 0;cursor:pointer;color:#666;font-size:13px;border:none;background:transparent}
-.detail{display:flex;flex-direction:column;align-items:center;padding:1.5rem 2rem 1rem;text-align:center}
-.big-ill{width:110px;height:110px;margin-bottom:1rem;color:#111}
-.dname{font-size:22px;font-weight:500;color:#111;font-family:Georgia,serif;letter-spacing:-0.02em}
-.dcal{font-size:12px;color:#aaa;margin-top:4px;margin-bottom:1rem}
-.ddesc{font-size:13px;color:#666;line-height:1.6;margin-bottom:1.5rem}
-.size-label{font-size:10px;letter-spacing:0.15em;color:#aaa;text-transform:uppercase;margin-bottom:10px}
-.opt-row{display:flex;flex-direction:column;gap:8px;width:100%}
-.sz{width:100%;padding:12px 0;border:0.5px solid #ccc;border-radius:8px;background:transparent;color:#666;font-size:13px;cursor:pointer}
-.sz.on{background:#111;color:#fff;border-color:#111}
-.size-row{display:flex;gap:10px;width:100%}
-.sz-half{flex:1;padding:12px 0;border:0.5px solid #ccc;border-radius:8px;background:transparent;color:#666;font-size:13px;cursor:pointer}
-.sz-half.on{background:#111;color:#fff;border-color:#111}
-.order-btn{width:100%;padding:14px;background:#111;color:#fff;border:none;border-radius:8px;font-size:14px;cursor:pointer;margin-top:1.5rem}
-.order-btn:disabled{opacity:0.3;cursor:default}
-.sent{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem;text-align:center}
-.sent-ring{width:60px;height:60px;border-radius:50%;border:0.5px solid #ccc;display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;font-size:22px}
-.sent-title{font-size:22px;font-weight:500;font-family:Georgia,serif;color:#111;margin-bottom:6px}
-.sent-sub{font-size:13px;color:#666;line-height:1.6;margin-bottom:2rem}
-.again{background:transparent;border:0.5px solid #ccc;color:#666;padding:11px 2rem;border-radius:8px;font-size:13px;cursor:pointer}
+.tb{
+  flex:0 0 auto;background:transparent;border:none;cursor:pointer;
+  padding:6px 14px;
+  font-size:10.5px;letter-spacing:0.24em;text-transform:uppercase;
+  color:var(--ink-faint);font-weight:500;
+  position:relative;
+  transition:color 200ms ease;
+}
+.tb.on{color:var(--ink)}
+.tb.on::after{
+  content:"";position:absolute;left:50%;bottom:-3px;transform:translateX(-50%);
+  width:18px;height:1px;background:var(--ink);
+}
+
+/* ——— grid ——— */
+.grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  margin:0 22px;
+  border-top:1px solid var(--hair);
+  border-left:1px solid var(--hair);
+}
+.card{
+  border-right:1px solid var(--hair);
+  border-bottom:1px solid var(--hair);
+  padding:26px 14px 22px;
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+  cursor:pointer;background:transparent;
+  position:relative;
+  transition:background-color 180ms ease;
+}
+.card:active{background:var(--hair-soft)}
+.card .num{
+  position:absolute;top:8px;left:10px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;color:var(--ink-faint);letter-spacing:0.06em;
+}
+.card .temp{
+  position:absolute;top:8px;right:10px;
+  font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-faint);
+}
+.ill{width:58px;height:58px;color:var(--ink);display:grid;place-items:center}
+.ill svg{width:100%;height:100%;stroke:currentColor;fill:none;stroke-width:0.9;stroke-linecap:round;stroke-linejoin:round}
+.cname{
+  font-family:'Bodoni Moda',serif;font-style:italic;font-weight:400;
+  font-size:17px;letter-spacing:-0.005em;color:var(--ink);text-align:center;
+  line-height:1.1;
+}
+.ccal{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9.5px;color:var(--ink-faint);letter-spacing:0.03em;
+}
+
+/* ——— star button ——— */
+.star{
+  position:absolute;top:8px;right:10px;
+  width:24px;height:24px;display:grid;place-items:center;
+  background:transparent;border:none;cursor:pointer;
+  color:var(--ink-faint);
+  transition:color 200ms ease, transform 200ms ease;
+  z-index:2;
+}
+.star:active{transform:scale(0.85)}
+.star svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.2;stroke-linejoin:round}
+.star.on{color:var(--ink)}
+.star.on svg{fill:currentColor}
+.dstar{
+  width:34px;height:34px;display:grid;place-items:center;
+  background:transparent;border:none;cursor:pointer;color:var(--ink-soft);
+  transition:color 200ms ease, transform 200ms ease;
+}
+.dstar:active{transform:scale(0.88)}
+.dstar svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.1;stroke-linejoin:round}
+.dstar.on{color:var(--ink)}
+.dstar.on svg{fill:currentColor}
+
+/* ——— favorites rail ——— */
+.fav-section{padding:18px 0 4px}
+.fav-head{
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  padding:0 22px 14px;
+}
+.fav-head .line{flex:1;height:1px;background:var(--hair-soft)}
+.fav-head .t{
+  font-size:9.5px;letter-spacing:0.32em;text-transform:uppercase;color:var(--ink-soft);font-weight:500;
+  display:flex;align-items:center;gap:8px;
+}
+.fav-head .t svg{width:10px;height:10px;stroke:currentColor;fill:currentColor;stroke-width:0.8}
+.fav-rail{
+  display:flex;gap:0;padding:0 22px 6px;
+  overflow-x:auto;scrollbar-width:none;
+  scroll-snap-type:x mandatory;
+}
+.fav-rail::-webkit-scrollbar{display:none}
+.fav-card{
+  flex:0 0 auto;width:138px;
+  border:1px solid var(--hair);
+  padding:18px 12px 14px;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  cursor:pointer;background:transparent;
+  scroll-snap-align:start;
+  position:relative;
+}
+.fav-card + .fav-card{border-left:none}
+.fav-card:active{background:var(--hair-soft)}
+.fav-card .ill{width:42px;height:42px}
+.fav-card .cname{font-size:14px}
+.fav-card .ccal{font-size:8.5px}
+.fav-card .fav-mark{
+  position:absolute;top:7px;right:8px;
+  font-size:11px;color:var(--ink);
+}
+.fav-card .fav-mark svg{width:9px;height:9px;fill:currentColor;stroke:currentColor;stroke-width:0.8}
+
+/* ——— footer note ——— */
+.foot{
+  padding:34px 22px 8px;text-align:center;
+  font-size:9.5px;letter-spacing:0.28em;text-transform:uppercase;color:var(--ink-faint);
+}
+.foot .sig{
+  font-family:'Bodoni Moda',serif;font-style:italic;font-size:14px;color:var(--ink-soft);
+  letter-spacing:0;text-transform:none;margin-top:6px;
+}
+
+/* ——— detail (expand in place) ——— */
+.detail{
+  position:fixed;inset:0;background:var(--paper);
+  z-index:30;display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;
+  transform:translateY(8px) scale(0.98);
+  transform-origin:var(--ox,50%) var(--oy,50%);
+  transition:opacity 320ms cubic-bezier(.22,.61,.36,1), transform 420ms cubic-bezier(.22,.61,.36,1), background-color 700ms ease;
+  overflow-y:auto;
+}
+.detail.on{opacity:1;pointer-events:auto;transform:translateY(0) scale(1)}
+.detail-inner{
+  max-width:430px;width:100%;margin:0 auto;padding:14px 26px 40px;min-height:100%;
+  display:flex;flex-direction:column;
+}
+.dtop{display:flex;align-items:center;justify-content:space-between;padding:0 0 4px}
+.dback{
+  background:transparent;border:none;cursor:pointer;color:var(--ink);
+  display:flex;align-items:center;gap:8px;padding:6px 0;
+  font-size:10.5px;letter-spacing:0.24em;text-transform:uppercase;font-weight:500;
+}
+.dback svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.2}
+.dnum{
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-faint);letter-spacing:0.06em;
+}
+.dhero{
+  text-align:center;padding:40px 8px 12px;
+}
+.dhero .ill{width:120px;height:120px;margin:0 auto 24px}
+.deye{
+  font-size:9.5px;letter-spacing:0.32em;text-transform:uppercase;color:var(--ink-soft);
+  margin-bottom:14px;
+}
+.dname{
+  font-family:'Bodoni Moda',serif;font-style:italic;font-weight:400;
+  font-size:46px;letter-spacing:-0.01em;line-height:0.95;color:var(--ink);
+}
+.dmeta{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  margin-top:14px;
+}
+.dmeta .line{flex:0 0 22px;height:1px;background:var(--hair-soft)}
+.dmeta .t{
+  font-size:9.5px;letter-spacing:0.28em;text-transform:uppercase;color:var(--ink-soft);
+}
+.ddesc{
+  font-family:'Bodoni Moda',serif;font-weight:400;
+  font-size:15px;line-height:1.6;color:var(--ink-soft);
+  text-align:center;max-width:300px;margin:22px auto 0;
+  text-wrap:pretty;
+}
+.dcal{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--ink-faint);letter-spacing:0.04em;
+  text-align:center;margin-top:14px;
+}
+
+.dopts{margin-top:36px}
+.opt-label{
+  display:flex;align-items:center;gap:12px;justify-content:center;
+  margin-bottom:14px;
+}
+.opt-label .line{flex:0 0 22px;height:1px;background:var(--hair-soft)}
+.opt-label .t{
+  font-size:9.5px;letter-spacing:0.3em;text-transform:uppercase;color:var(--ink-soft);
+}
+.size-row{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--hair)}
+.sz-half{
+  padding:18px 0;background:transparent;border:none;cursor:pointer;
+  font-family:'Bodoni Moda',serif;font-style:italic;font-size:18px;color:var(--ink-soft);
+  letter-spacing:-0.005em;
+  position:relative;
+  transition:color 180ms ease, background-color 200ms ease;
+}
+.sz-half + .sz-half{border-left:1px solid var(--hair)}
+.sz-half .sub{
+  display:block;font-family:'JetBrains Mono',monospace;font-style:normal;
+  font-size:9px;color:var(--ink-faint);letter-spacing:0.06em;margin-top:4px;
+}
+.sz-half.on{background:var(--ink);color:var(--paper)}
+.sz-half.on .sub{color:var(--paper);opacity:0.6}
+.opt-col{display:flex;flex-direction:column;border:1px solid var(--hair)}
+.sz{
+  padding:16px 0;background:transparent;border:none;cursor:pointer;
+  font-family:'Bodoni Moda',serif;font-style:italic;font-size:18px;color:var(--ink-soft);
+  transition:color 180ms ease, background-color 200ms ease;
+}
+.sz + .sz{border-top:1px solid var(--hair)}
+.sz.on{background:var(--ink);color:var(--paper)}
+
+.order-btn{
+  margin-top:32px;width:100%;
+  padding:18px 0;background:var(--ink);color:var(--paper);
+  border:none;cursor:pointer;
+  font-size:11px;letter-spacing:0.32em;text-transform:uppercase;font-weight:500;
+  font-family:'Inter',sans-serif;
+  transition:opacity 200ms ease, background-color 400ms ease, color 400ms ease;
+}
+.order-btn:disabled{opacity:0.25;cursor:default}
+
+.disclaim{
+  text-align:center;margin-top:18px;
+  font-family:'Bodoni Moda',serif;font-style:italic;font-size:12px;color:var(--ink-faint);
+}
+
+/* ——— sent ——— */
+.sent{
+  position:fixed;inset:0;background:var(--paper);
+  z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:0 32px;text-align:center;
+  opacity:0;pointer-events:none;
+  transform:scale(1.02);
+  transition:opacity 420ms ease, transform 520ms cubic-bezier(.22,.61,.36,1), background-color 700ms ease;
+}
+.sent.on{opacity:1;pointer-events:auto;transform:scale(1)}
+.sent-eye{
+  font-size:9.5px;letter-spacing:0.32em;text-transform:uppercase;color:var(--ink-soft);
+  margin-bottom:18px;
+}
+.sent-mark{
+  width:62px;height:62px;border:1px solid var(--hair);border-radius:50%;
+  display:grid;place-items:center;margin-bottom:28px;
+}
+.sent-mark svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:1}
+.sent-title{
+  font-family:'Bodoni Moda',serif;font-style:italic;font-weight:400;
+  font-size:56px;line-height:0.95;letter-spacing:-0.01em;
+}
+.sent-order{
+  margin-top:18px;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:var(--ink-soft);
+}
+.sent-msg{
+  margin-top:32px;max-width:300px;
+  font-family:'Bodoni Moda',serif;font-style:italic;font-size:17px;line-height:1.45;color:var(--ink);
+  text-wrap:pretty;
+}
+.sent-msg .em{font-style:normal;font-family:'Inter',sans-serif;font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-top:14px}
+.sent-again{
+  margin-top:44px;background:transparent;border:none;cursor:pointer;color:var(--ink);
+  font-size:10.5px;letter-spacing:0.3em;text-transform:uppercase;font-weight:500;
+  padding:14px 26px;border-bottom:1px solid var(--ink);
+}
+
+/* ——— history sheet ——— */
+.sheet{
+  position:fixed;inset:0;z-index:50;
+  display:flex;align-items:flex-end;justify-content:center;
+  pointer-events:none;
+}
+.sheet-bg{
+  position:absolute;inset:0;background:rgba(20,19,18,0.36);
+  opacity:0;transition:opacity 320ms ease;
+}
+html[data-mode="night"] .sheet-bg{background:rgba(0,0,0,0.6)}
+.sheet-panel{
+  position:relative;width:100%;max-width:430px;
+  background:var(--paper);
+  border-top:1px solid var(--hair);
+  padding:22px 26px 36px;
+  transform:translateY(100%);
+  transition:transform 420ms cubic-bezier(.22,.61,.36,1), background-color 700ms ease;
+  max-height:80vh;overflow-y:auto;
+}
+.sheet.on{pointer-events:auto}
+.sheet.on .sheet-bg{opacity:1}
+.sheet.on .sheet-panel{transform:translateY(0)}
+.sheet-grip{width:36px;height:3px;background:var(--hair-soft);border-radius:2px;margin:0 auto 18px}
+.sheet h3{
+  font-family:'Bodoni Moda',serif;font-style:italic;font-weight:400;
+  font-size:32px;text-align:center;letter-spacing:-0.01em;
+}
+.sheet .sub{
+  text-align:center;font-size:9.5px;letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--ink-faint);margin-top:6px;margin-bottom:22px;
+}
+.hist-empty{
+  text-align:center;padding:30px 0 20px;
+  font-family:'Bodoni Moda',serif;font-style:italic;color:var(--ink-soft);font-size:15px;
+}
+.hist-list{display:flex;flex-direction:column}
+.hist-row{
+  display:grid;grid-template-columns:1fr auto;gap:12px;align-items:baseline;
+  padding:14px 0;border-top:1px solid var(--hair-soft);
+}
+.hist-row:last-child{border-bottom:1px solid var(--hair-soft)}
+.hist-name{
+  font-family:'Bodoni Moda',serif;font-style:italic;font-size:18px;color:var(--ink);line-height:1.1;
+}
+.hist-sub{
+  font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--ink-faint);
+  letter-spacing:0.04em;margin-top:3px;text-transform:uppercase;
+}
+.hist-date{
+  font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--ink-soft);
+  letter-spacing:0.04em;text-align:right;
+  white-space:nowrap;
+}
+.hist-clear{
+  display:block;margin:22px auto 0;background:transparent;border:none;cursor:pointer;
+  font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:var(--ink-faint);
+}
+
+/* desktop: subtle frame */
+@media(min-width:540px){
+  body{background:#E9E6E0;padding:24px 0}
+  html[data-mode="night"] body{background:#06060A}
+  .app{
+    box-shadow:0 1px 0 rgba(0,0,0,0.04), 0 30px 80px -20px rgba(0,0,0,0.25);
+    background:var(--paper);
+    border-radius:36px;
+    overflow:hidden;
+    min-height:880px;
+    transition:background-color 700ms ease;
+  }
+}
 </style>
 </head>
 <body>
 
-<div id="home">
-  <div class="header">
-    <div class="brand">café · xalapa</div>
-    <div class="title">Maison Jenn</div>
-    <div class="tagline">¿Qué te preparo hoy?</div>
+<div class="app">
+
+  <!-- top bar -->
+  <div class="topbar">
+    <button class="iconbtn" id="modeBtn" aria-label="Cambiar modo">
+      <svg id="iconMode" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+    </button>
+    <div class="stamp" id="dateStamp">Vol. III · No. 27</div>
+    <button class="iconbtn" id="histBtn" aria-label="Historial">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2.2"/></svg>
+    </button>
   </div>
-  <div class="cats">
-    <button class="tb on" onclick="setCat('all',this)">Todas</button>
-    <button class="tb" onclick="setCat('hot',this)">Bebidas calientes</button>
-    <button class="tb" onclick="setCat('cold',this)">Bebidas frías</button>
-    <button class="tb" onclick="setCat('otras',this)">Otras bebidas</button>
+
+  <!-- masthead -->
+  <div class="mast">
+    <div class="mast-meta">
+      <span class="line"></span>
+      <span class="greet" id="greet">Buenos días, mi amor</span>
+      <span class="line"></span>
+    </div>
+    <div class="wordmark wm-1">Maison</div>
+    <div class="wordmark wm-2">Jenn</div>
+    <div class="mast-foot">
+      <span class="l">Café · Xalapa</span>
+      <span class="dot"></span>
+      <span class="r" id="todayLabel">Jueves</span>
+    </div>
   </div>
+
+  <!-- favorites -->
+  <div class="fav-section" id="favSection" style="display:none">
+    <div class="fav-head">
+      <span class="line"></span>
+      <span class="t"><svg viewBox="0 0 24 24"><polygon points="12,3 14.6,9.1 21,9.7 16.1,14 17.7,20.3 12,16.9 6.3,20.3 7.9,14 3,9.7 9.4,9.1"/></svg> Tus favoritos</span>
+      <span class="line"></span>
+    </div>
+    <div class="fav-rail" id="favRail"></div>
+  </div>
+
+  <!-- categories -->
+  <div class="cats-wrap">
+    <div class="hair-soft"></div>
+    <div class="cats">
+      <button class="tb on" data-cat="all">Todas</button>
+      <button class="tb" data-cat="hot">Calientes</button>
+      <button class="tb" data-cat="cold">Frías</button>
+      <button class="tb" data-cat="otras">Otras</button>
+    </div>
+    <div class="hair-soft"></div>
+  </div>
+
+  <!-- grid -->
   <div class="grid" id="grid"></div>
-</div>
 
-<div class="overlay" id="detail">
-  <button class="back" onclick="goHome()">&#8592; Menú</button>
-  <div class="detail">
-    <div id="bigIll" class="big-ill"></div>
-    <div class="dname" id="dname"></div>
-    <div class="dcal" id="dcal"></div>
-    <div class="ddesc" id="ddesc"></div>
-    <div class="size-label" id="optLabel">Tamaño</div>
-    <div id="optContainer"></div>
-    <button class="order-btn" id="orderBtn" onclick="sendOrder()" disabled>Enviar pedido</button>
+  <!-- footer note -->
+  <div class="foot">
+    <div>— Hecho con cariño —</div>
+    <div class="sig">para ti, siempre.</div>
   </div>
 </div>
 
+<!-- detail -->
+<div class="detail" id="detail">
+  <div class="detail-inner">
+    <div class="dtop">
+      <button class="dback" onclick="goHome()">
+        <svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
+        Menú
+      </button>
+      <div style="display:flex;align-items:center;gap:6px">
+        <div class="dnum" id="dnum">— · —</div>
+        <button class="dstar" id="dStar" aria-label="Favorito">
+          <svg viewBox="0 0 24 24"><polygon points="12,3 14.6,9.1 21,9.7 16.1,14 17.7,20.3 12,16.9 6.3,20.3 7.9,14 3,9.7 9.4,9.1"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="dhero">
+      <div id="bigIll" class="ill"></div>
+      <div class="deye" id="dEye">De la carta</div>
+      <div class="dname" id="dname"></div>
+      <div class="dmeta">
+        <span class="line"></span>
+        <span class="t" id="dTempLbl">Servido caliente</span>
+        <span class="line"></span>
+      </div>
+      <div class="ddesc" id="ddesc"></div>
+      <div class="dcal" id="dcal"></div>
+    </div>
+    <div class="dopts">
+      <div class="opt-label">
+        <span class="line"></span>
+        <span class="t" id="optLabel">Tamaño</span>
+        <span class="line"></span>
+      </div>
+      <div id="optContainer"></div>
+    </div>
+    <button class="order-btn" id="orderBtn" onclick="sendOrder()" disabled>Enviar pedido</button>
+    <div class="disclaim">Llegará una nota al barista en un instante.</div>
+  </div>
+</div>
+
+<!-- sent -->
 <div class="sent" id="sent">
-  <div class="sent-ring">✓</div>
-  <div class="sent-title">En camino</div>
-  <div class="sent-sub" id="sentMsg"></div>
-  <button class="again" onclick="reset()">Pedir de nuevo</button>
+  <div class="sent-eye">Comanda recibida</div>
+  <div class="sent-mark">
+    <svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg>
+  </div>
+  <div class="sent-title">En camino.</div>
+  <div class="sent-order" id="sentOrder"></div>
+  <div class="sent-msg" id="sentMsg"></div>
+  <button class="sent-again" onclick="reset()">Pedir otro</button>
+</div>
+
+<!-- history sheet -->
+<div class="sheet" id="sheet">
+  <div class="sheet-bg" onclick="closeSheet()"></div>
+  <div class="sheet-panel">
+    <div class="sheet-grip"></div>
+    <h3>Historial</h3>
+    <div class="sub">Las últimas comandas</div>
+    <div id="histBody"></div>
+  </div>
 </div>
 
 <script>
-const WEBHOOK='https://discord.com/api/webhooks/1509444128956747856/nRYmmbCFqK8aPN28Lz8fsNLYRCUc8PxI5jEyyrySaV-nhR3lgmzNAshw5sesttZzIArk';
+const WEBHOOK='https://discord.com/api/webhooks/1509465525330382899/HFqMbNS0NVCt2ezZOrrc3CfYK29ozNk1zHHAVUD7HwqMwQIL2a_kOGyTKG-AzaX3EjnJ';
 
 const cafe=[
-  {id:'americano',name:'Americano',temp:'both',cal:{chico:15,grande:20},desc:'Espresso con agua caliente o fría. Suave y largo.',icon:'americano',type:'cafe'},
-  {id:'latte',name:'Latte',temp:'both',cal:{chico:120,grande:190},desc:'Espresso con leche vaporizada. Cremoso y suave.',icon:'latte',type:'cafe'},
-  {id:'capuchino',name:'Capuchino',temp:'both',cal:{chico:80,grande:120},desc:'Espresso, leche vaporizada y espuma densa.',icon:'capuchino',type:'cafe'},
-  {id:'flatwhite',name:'Flat white',temp:'hot',cal:{chico:100,grande:150},desc:'Doble espresso con microespuma sedosa. Intenso.',icon:'latte',type:'cafe'},
-  {id:'espresso',name:'Espresso',temp:'hot',cal:{chico:5,grande:10},desc:'Chico: sencillo. Grande: doble. Puro y concentrado.',icon:'espresso',type:'cafe'},
-  {id:'matchate',name:'Matcha té',temp:'both',cal:{chico:5,grande:8},desc:'Matcha puro disuelto. Terroso y limpio.',icon:'matchate',type:'cafe'},
-  {id:'matchalatte',name:'Matcha latte',temp:'both',cal:{chico:130,grande:200},desc:'Matcha con leche vaporizada. Suave y herbal.',icon:'matchalatte',type:'cafe'},
-  {id:'matchapresso',name:'Matcha presso',temp:'cold',cal:{chico:140,grande:210},desc:'Matcha frío con leche. Refrescante y cremoso.',icon:'matchalatte',type:'cafe'},
-  {id:'matchatonic',name:'Matcha tonic',temp:'cold',cal:{chico:60,grande:90},desc:'Matcha sobre agua tónica con hielo. Vibrante.',icon:'tonic',type:'cafe'},
-  {id:'espressotonic',name:'Espresso tonic',temp:'cold',cal:{chico:55,grande:80},desc:'Espresso sobre tónica y hielo. Amargo y burbujeante.',icon:'tonic',type:'cafe'},
-  {id:'cloudmatcha',name:'Cloud matcha',temp:'cold',cal:{chico:90,grande:140},desc:'Matcha con espuma de leche fría encima. Suave.',icon:'cloud',type:'cafe'},
-  {id:'cloudespresso',name:'Cloud espresso',temp:'cold',cal:{chico:85,grande:130},desc:'Espresso con nube de leche fría. Contrastante.',icon:'cloud',type:'cafe'},
-  {id:'dirtymatcha',name:'Dirty matcha',temp:'both',cal:{chico:150,grande:220},desc:'Matcha con shot de espresso. Lo mejor de dos mundos.',icon:'dirty',type:'cafe'},
+  {id:'americano',name:'Americano',temp:'both',cal:{chico:15,grande:20},desc:'Espresso alargado con agua. Suave, limpio, sin prisa.',icon:'americano',type:'cafe'},
+  {id:'latte',name:'Latte',temp:'both',cal:{chico:120,grande:190},desc:'Espresso con leche vaporizada. Cremoso, redondo, reconfortante.',icon:'latte',type:'cafe'},
+  {id:'capuchino',name:'Capuchino',temp:'both',cal:{chico:80,grande:120},desc:'Espresso, leche vaporizada y una espuma densa que abraza.',icon:'capuchino',type:'cafe'},
+  {id:'flatwhite',name:'Flat white',temp:'hot',cal:{chico:100,grande:150},desc:'Doble espresso bajo una microespuma sedosa. Intenso pero suave.',icon:'latte',type:'cafe'},
+  {id:'espresso',name:'Espresso',temp:'hot',cal:{chico:5,grande:10},desc:'El alma del café. Chico: sencillo. Grande: doble.',icon:'espresso',type:'cafe'},
+  {id:'matchate',name:'Matcha té',temp:'both',cal:{chico:5,grande:8},desc:'Matcha puro disuelto en agua. Terroso, limpio, herbal.',icon:'matchate',type:'cafe'},
+  {id:'matchalatte',name:'Matcha latte',temp:'both',cal:{chico:130,grande:200},desc:'Matcha con leche vaporizada. Suave, vegetal, sedoso.',icon:'matchalatte',type:'cafe'},
+  {id:'matchapresso',name:'Matcha presso',temp:'cold',cal:{chico:140,grande:210},desc:'Matcha frío sobre leche helada. Refrescante y cremoso.',icon:'matchalatte',type:'cafe'},
+  {id:'matchatonic',name:'Matcha tonic',temp:'cold',cal:{chico:60,grande:90},desc:'Matcha sobre agua tónica con hielo. Vibrante y burbujeante.',icon:'tonic',type:'cafe'},
+  {id:'espressotonic',name:'Espresso tonic',temp:'cold',cal:{chico:55,grande:80},desc:'Espresso sobre tónica fría. Amargo, ácido, vivo.',icon:'tonic',type:'cafe'},
+  {id:'cloudmatcha',name:'Cloud matcha',temp:'cold',cal:{chico:90,grande:140},desc:'Matcha con una nube de leche fría encima. Suave y aireado.',icon:'cloud',type:'cafe'},
+  {id:'cloudespresso',name:'Cloud espresso',temp:'cold',cal:{chico:85,grande:130},desc:'Espresso con espuma fría. Contraste claro y elegante.',icon:'cloud',type:'cafe'},
+  {id:'dirtymatcha',name:'Dirty matcha',temp:'both',cal:{chico:150,grande:220},desc:'Matcha con un shot de espresso. Lo mejor de dos mundos.',icon:'dirty',type:'cafe'},
 ];
 
 const otras=[
-  {id:'aguatonica',name:'Agua tónica',temp:'cold',cal:40,desc:'Burbujeante y ligeramente amarga. Refrescante.',icon:'tonic',type:'otra',variantes:null},
-  {id:'aguacoco',name:'Agua de coco',temp:'cold',cal:45,desc:'Natural y dulce. Hidratante.',icon:'coco',type:'otra',variantes:null},
-  {id:'arizona',name:'Arizona',temp:'cold',cal:70,desc:'Clásico americano. Suave y dulce.',icon:'can',type:'otra',variantes:['Té verde']},
-  {id:'lipton',name:'Lipton',temp:'cold',cal:35,desc:'Ligero y refrescante.',icon:'can',type:'otra',variantes:['Té negro','Limón','Durazno']},
+  {id:'aguatonica',name:'Agua tónica',temp:'cold',cal:40,desc:'Burbujeante, ligeramente amarga. Reset para el paladar.',icon:'tonic',type:'otra',variantes:null},
+  {id:'aguacoco',name:'Agua de coco',temp:'cold',cal:45,desc:'Hidratante, ligeramente dulce. Suave como el verano.',icon:'coco',type:'otra',variantes:null},
+  {id:'arizona',name:'Arizona',temp:'cold',cal:70,desc:'Clásico americano embotellado.',icon:'can',type:'otra',variantes:['Té verde']},
+  {id:'lipton',name:'Lipton',temp:'cold',cal:35,desc:'Té frío, refrescante. Elige tu nota.',icon:'can',type:'otra',variantes:['Té negro','Limón','Durazno']},
 ];
 
+/* Refined SVGs — thinner strokes, gentler curves */
 const svgs={
-  espresso:`<svg viewBox="0 0 72 72" fill="none"><rect x="22" y="28" width="28" height="22" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M50 34 Q58 34 58 40 Q58 46 50 46" stroke="currentColor" stroke-width="1.5" fill="none"/><line x1="16" y1="50" x2="56" y2="50" stroke="currentColor" stroke-width="1.5"/><path d="M30 28 Q33 22 36 24 Q39 22 42 28" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>`,
-  americano:`<svg viewBox="0 0 72 72" fill="none"><path d="M20 24 L24 54 Q24 56 26 56 L46 56 Q48 56 48 54 L52 24 Z" stroke="currentColor" stroke-width="1.5"/><line x1="16" y1="56" x2="56" y2="56" stroke="currentColor" stroke-width="1.5"/><line x1="20" y1="24" x2="52" y2="24" stroke="currentColor" stroke-width="1.5"/><line x1="26" y1="34" x2="30" y2="34" stroke="currentColor" stroke-width="1.5"/><line x1="26" y1="40" x2="30" y2="40" stroke="currentColor" stroke-width="1.5"/><line x1="26" y1="46" x2="30" y2="46" stroke="currentColor" stroke-width="1.5"/></svg>`,
-  latte:`<svg viewBox="0 0 72 72" fill="none"><path d="M20 22 L24 56 Q24 58 26 58 L46 58 Q48 58 48 56 L52 22 Z" stroke="currentColor" stroke-width="1.5"/><line x1="20" y1="22" x2="52" y2="22" stroke="currentColor" stroke-width="1.5"/><path d="M52 32 Q60 32 60 39 Q60 46 52 46" stroke="currentColor" stroke-width="1.5" fill="none"/><ellipse cx="36" cy="32" rx="12" ry="4" stroke="currentColor" stroke-width="1.5"/></svg>`,
-  capuchino:`<svg viewBox="0 0 72 72" fill="none"><rect x="20" y="30" width="32" height="24" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M52 36 Q60 36 60 42 Q60 48 52 48" stroke="currentColor" stroke-width="1.5" fill="none"/><line x1="16" y1="54" x2="56" y2="54" stroke="currentColor" stroke-width="1.5"/><path d="M20 30 Q36 20 52 30" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>`,
-  matchate:`<svg viewBox="0 0 72 72" fill="none"><path d="M22 26 L26 54 Q26 56 28 56 L44 56 Q46 56 46 54 L50 26 Z" stroke="currentColor" stroke-width="1.5"/><line x1="22" y1="26" x2="50" y2="26" stroke="currentColor" stroke-width="1.5"/><path d="M50 32 Q56 32 56 38 Q56 44 50 44" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M30 20 Q36 14 42 20" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="36" cy="12" r="2" stroke="currentColor" stroke-width="1.5"/></svg>`,
-  matchalatte:`<svg viewBox="0 0 72 72" fill="none"><path d="M18 22 L22 58 Q22 60 24 60 L48 60 Q50 60 50 58 L54 22 Z" stroke="currentColor" stroke-width="1.5"/><line x1="18" y1="22" x2="54" y2="22" stroke="currentColor" stroke-width="1.5"/><path d="M54 32 Q62 32 62 39 Q62 46 54 46" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M26 32 Q36 26 46 32 Q36 38 26 32Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>`,
-  tonic:`<svg viewBox="0 0 72 72" fill="none"><path d="M20 20 L24 58 Q24 60 26 60 L46 60 Q48 60 48 58 L52 20 Z" stroke="currentColor" stroke-width="1.5"/><line x1="20" y1="20" x2="52" y2="20" stroke="currentColor" stroke-width="1.5"/><circle cx="30" cy="38" r="2" stroke="currentColor" stroke-width="1.2"/><circle cx="42" cy="32" r="1.5" stroke="currentColor" stroke-width="1.2"/><circle cx="36" cy="46" r="1.5" stroke="currentColor" stroke-width="1.2"/><line x1="34" y1="14" x2="34" y2="20" stroke="currentColor" stroke-width="1.5"/><line x1="38" y1="14" x2="38" y2="20" stroke="currentColor" stroke-width="1.5"/></svg>`,
-  cloud:`<svg viewBox="0 0 72 72" fill="none"><path d="M20 32 L24 58 Q24 60 26 60 L46 60 Q48 60 48 58 L52 32 Z" stroke="currentColor" stroke-width="1.5"/><line x1="20" y1="32" x2="52" y2="32" stroke="currentColor" stroke-width="1.5"/><path d="M24 32 Q26 20 30 20 Q32 14 36 16 Q40 12 44 18 Q48 18 50 24 Q54 26 52 32" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>`,
-  dirty:`<svg viewBox="0 0 72 72" fill="none"><path d="M18 24 L22 58 Q22 60 24 60 L48 60 Q50 60 50 58 L54 24 Z" stroke="currentColor" stroke-width="1.5"/><line x1="18" y1="24" x2="54" y2="24" stroke="currentColor" stroke-width="1.5"/><path d="M54 34 Q62 34 62 41 Q62 48 54 48" stroke="currentColor" stroke-width="1.5" fill="none"/><rect x="28" y="16" width="16" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/><line x1="32" y1="16" x2="32" y2="12" stroke="currentColor" stroke-width="1.5"/><line x1="40" y1="16" x2="40" y2="12" stroke="currentColor" stroke-width="1.5"/></svg>`,
-  coco:`<svg viewBox="0 0 72 72" fill="none"><path d="M22 28 L26 58 Q26 60 28 60 L44 60 Q46 60 46 58 L50 28 Z" stroke="currentColor" stroke-width="1.5"/><line x1="22" y1="28" x2="50" y2="28" stroke="currentColor" stroke-width="1.5"/><path d="M36 28 L36 18 Q42 14 46 16" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M36 18 Q30 12 24 16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>`,
-  can:`<svg viewBox="0 0 72 72" fill="none"><rect x="24" y="20" width="24" height="38" rx="4" stroke="currentColor" stroke-width="1.5"/><ellipse cx="36" cy="20" rx="12" ry="3" stroke="currentColor" stroke-width="1.5"/><ellipse cx="36" cy="58" rx="12" ry="3" stroke="currentColor" stroke-width="1.5"/><line x1="34" y1="14" x2="34" y2="20" stroke="currentColor" stroke-width="1.5"/><path d="M34 14 Q36 12 38 14" stroke="currentColor" stroke-width="1.5" fill="none"/><line x1="24" y1="32" x2="48" y2="32" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2"/></svg>`,
+  espresso:`<svg viewBox="0 0 72 72"><path d="M22 30 L24 50 Q24 52 26 52 L46 52 Q48 52 48 50 L50 30 Z"/><line x1="20" y1="30" x2="52" y2="30"/><path d="M50 34 Q56 34 56 40 Q56 46 50 46"/><line x1="18" y1="52" x2="54" y2="52"/><path d="M30 28 Q33 22 36 24 Q39 22 42 28"/></svg>`,
+  americano:`<svg viewBox="0 0 72 72"><path d="M22 26 L25 54 Q25 56 27 56 L45 56 Q47 56 47 54 L50 26 Z"/><line x1="22" y1="26" x2="50" y2="26"/><line x1="20" y1="56" x2="52" y2="56"/></svg>`,
+  latte:`<svg viewBox="0 0 72 72"><path d="M21 22 L24 56 Q24 58 26 58 L46 58 Q48 58 48 56 L51 22 Z"/><line x1="21" y1="22" x2="51" y2="22"/><path d="M51 30 Q59 30 59 38 Q59 46 51 46"/><ellipse cx="36" cy="30" rx="11" ry="3.5"/></svg>`,
+  capuchino:`<svg viewBox="0 0 72 72"><path d="M22 32 L24 52 Q24 54 26 54 L46 54 Q48 54 48 52 L50 32 Z"/><line x1="20" y1="54" x2="52" y2="54"/><path d="M50 36 Q57 36 57 42 Q57 48 50 48"/><path d="M22 32 Q36 22 50 32"/></svg>`,
+  matchate:`<svg viewBox="0 0 72 72"><path d="M23 28 L26 54 Q26 56 28 56 L44 56 Q46 56 46 54 L49 28 Z"/><line x1="23" y1="28" x2="49" y2="28"/><path d="M49 32 Q55 32 55 38 Q55 44 49 44"/><path d="M30 22 Q36 16 42 22"/><path d="M36 22 L36 14"/></svg>`,
+  matchalatte:`<svg viewBox="0 0 72 72"><path d="M20 22 L23 58 Q23 60 25 60 L47 60 Q49 60 49 58 L52 22 Z"/><line x1="20" y1="22" x2="52" y2="22"/><path d="M52 32 Q60 32 60 39 Q60 46 52 46"/><path d="M27 32 Q36 27 45 32"/></svg>`,
+  tonic:`<svg viewBox="0 0 72 72"><path d="M22 20 L25 58 Q25 60 27 60 L45 60 Q47 60 47 58 L50 20 Z"/><line x1="22" y1="20" x2="50" y2="20"/><circle cx="30" cy="38" r="1.8"/><circle cx="40" cy="32" r="1.4"/><circle cx="36" cy="48" r="1.4"/><circle cx="32" cy="50" r="1"/><line x1="33" y1="14" x2="33" y2="20"/><line x1="39" y1="14" x2="39" y2="20"/></svg>`,
+  cloud:`<svg viewBox="0 0 72 72"><path d="M22 32 L25 58 Q25 60 27 60 L45 60 Q47 60 47 58 L50 32 Z"/><line x1="22" y1="32" x2="50" y2="32"/><path d="M24 32 Q26 22 30 22 Q32 16 36 18 Q40 14 44 20 Q48 20 50 24 Q53 26 52 32"/></svg>`,
+  dirty:`<svg viewBox="0 0 72 72"><path d="M20 24 L23 58 Q23 60 25 60 L47 60 Q49 60 49 58 L52 24 Z"/><line x1="20" y1="24" x2="52" y2="24"/><path d="M52 34 Q60 34 60 41 Q60 48 52 48"/><rect x="28" y="16" width="16" height="10" rx="1.5"/><line x1="32" y1="16" x2="32" y2="12"/><line x1="40" y1="16" x2="40" y2="12"/></svg>`,
+  coco:`<svg viewBox="0 0 72 72"><path d="M23 28 L26 58 Q26 60 28 60 L44 60 Q46 60 46 58 L49 28 Z"/><line x1="23" y1="28" x2="49" y2="28"/><path d="M36 28 L36 18 Q42 14 46 16"/><path d="M36 18 Q30 12 24 16"/></svg>`,
+  can:`<svg viewBox="0 0 72 72"><rect x="26" y="20" width="20" height="38" rx="2.5"/><ellipse cx="36" cy="20" rx="10" ry="2.5"/><ellipse cx="36" cy="58" rx="10" ry="2.5"/><line x1="34" y1="14" x2="34" y2="20"/><path d="M34 14 Q36 12 38 14"/><line x1="26" y1="32" x2="46" y2="32" stroke-dasharray="1.5 2"/></svg>`,
 };
+
+/* tender messages — random per order */
+const lovenotes=[
+  'Que sea el mejor sorbo del día.',
+  'Va con todo mi cariño, mi amor.',
+  'Para la persona más linda que conozco.',
+  'Que te alegre tantito esta tarde.',
+  'Te amo, gracias por existir.',
+  'Pediste bonito. Como tú.',
+  'Hecho con manos que te quieren.',
+  'Que te recuerde lo mucho que te pienso.',
+  'Disfrútalo despacio. Yo te espero.',
+  'Lo mejor que tengo, es contigo.',
+  'Tu favorito, listo en un momento.',
+  'Que el día se ponga de tu lado.',
+];
 
 let curCat='all',curDrink=null,curSelection=null;
 
+/* ——— favorites ——— */
+function getFavs(){ try{return JSON.parse(localStorage.getItem('mj_favs')||'[]')}catch(e){return []} }
+function setFavs(arr){ localStorage.setItem('mj_favs', JSON.stringify(arr)); }
+function isFav(id){ return getFavs().includes(id); }
+function toggleFav(id){
+  const favs=getFavs();
+  const i=favs.indexOf(id);
+  if(i>=0) favs.splice(i,1); else favs.unshift(id);
+  setFavs(favs);
+  renderGrid();
+  renderFavs();
+  if(curDrink && curDrink.id===id){ updateDetailStar(); }
+}
+function allDrinks(){ return [...cafe,...otras]; }
+function renderFavs(){
+  const favs=getFavs();
+  const sec=document.getElementById('favSection');
+  const rail=document.getElementById('favRail');
+  if(!favs.length){ sec.style.display='none'; rail.innerHTML=''; return; }
+  const dict=Object.fromEntries(allDrinks().map(d=>[d.id,d]));
+  const list=favs.map(id=>dict[id]).filter(Boolean);
+  if(!list.length){ sec.style.display='none'; return; }
+  sec.style.display='';
+  rail.innerHTML='';
+  list.forEach(d=>{
+    const c=document.createElement('div');
+    c.className='fav-card';
+    const calTxt=d.type==='otra'?`~${d.cal} kcal`:`~${d.cal.chico}–${d.cal.grande} kcal`;
+    c.innerHTML=`
+      <span class="fav-mark"><svg viewBox="0 0 24 24"><polygon points="12,3 14.6,9.1 21,9.7 16.1,14 17.7,20.3 12,16.9 6.3,20.3 7.9,14 3,9.7 9.4,9.1"/></svg></span>
+      <div class="ill">${svgs[d.icon]||svgs.latte}</div>
+      <div class="cname">${d.name}</div>
+      <div class="ccal">${calTxt}</div>`;
+    c.onclick=(e)=>openDetail(d, e.currentTarget);
+    rail.appendChild(c);
+  });
+}
+function updateDetailStar(){
+  const el=document.getElementById('dStar');
+  if(!curDrink || !el) return;
+  el.classList.toggle('on', isFav(curDrink.id));
+}
+
+/* ——— init ——— */
+function init(){
+  // mode
+  const mode=localStorage.getItem('mj_mode')||'day';
+  document.documentElement.setAttribute('data-mode', mode);
+  updateModeIcon();
+
+  // greeting + date stamp
+  setGreeting();
+  setDateStamp();
+
+  // bind
+  document.getElementById('modeBtn').onclick=toggleMode;
+  document.getElementById('histBtn').onclick=openSheet;
+  document.querySelectorAll('.tb').forEach(b=>{
+    b.onclick=()=>setCat(b.dataset.cat,b);
+  });
+
+  document.getElementById('dStar').onclick=()=>{ if(curDrink){ toggleFav(curDrink.id); } };
+
+  renderFavs();
+  renderGrid();
+}
+
+function setGreeting(){
+  const h=new Date().getHours();
+  let g='Buenos días, mi amor';
+  if(h>=12 && h<19) g='Buenas tardes, mi amor';
+  else if(h>=19 || h<5) g='Buenas noches, mi amor';
+  document.getElementById('greet').textContent=g;
+}
+function setDateStamp(){
+  const d=new Date();
+  const days=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  const months=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  document.getElementById('todayLabel').textContent=`${days[d.getDay()]} · ${d.getDate()} ${months[d.getMonth()]}`;
+  const doy = Math.floor((d - new Date(d.getFullYear(),0,0))/86400000);
+  document.getElementById('dateStamp').textContent=`No. ${String(doy).padStart(3,'0')}`;
+}
+
+function toggleMode(){
+  const cur=document.documentElement.getAttribute('data-mode')||'day';
+  const next=cur==='day'?'night':'day';
+  document.documentElement.setAttribute('data-mode', next);
+  localStorage.setItem('mj_mode', next);
+  updateModeIcon();
+}
+function updateModeIcon(){
+  const mode=document.documentElement.getAttribute('data-mode')||'day';
+  const el=document.getElementById('iconMode');
+  if(mode==='night'){
+    el.innerHTML=`<path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/>`;
+  } else {
+    el.innerHTML=`<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>`;
+  }
+}
+
+function setTint(t){ // '', 'warm', 'cool'
+  if(!t) document.documentElement.removeAttribute('data-tint');
+  else document.documentElement.setAttribute('data-tint', t);
+}
+
+/* ——— categories + grid ——— */
 function setCat(cat,el){
   curCat=cat;
   document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));
@@ -130,63 +760,114 @@ function setCat(cat,el){
   renderGrid();
 }
 
+function getList(){
+  if(curCat==='all') return [...cafe,...otras];
+  if(curCat==='hot') return cafe.filter(d=>d.temp==='hot'||d.temp==='both');
+  if(curCat==='cold') return [...cafe.filter(d=>d.temp==='cold'||d.temp==='both'),...otras];
+  if(curCat==='otras') return otras;
+  return [];
+}
+
 function renderGrid(){
   const g=document.getElementById('grid');
   g.innerHTML='';
-  let list=[];
-  if(curCat==='all') list=[...cafe,...otras];
-  else if(curCat==='hot') list=cafe.filter(d=>d.temp==='hot'||d.temp==='both');
-  else if(curCat==='cold') list=[...cafe.filter(d=>d.temp==='cold'||d.temp==='both'),...otras];
-  else if(curCat==='otras') list=otras;
-  list.forEach(d=>{
+  const list=getList();
+  list.forEach((d,i)=>{
     const c=document.createElement('div');
     c.className='card';
     const calTxt=d.type==='otra'?`~${d.cal} kcal`:`~${d.cal.chico}–${d.cal.grande} kcal`;
-    c.innerHTML=`<div class="ill">${svgs[d.icon]||svgs.latte}</div><div class="cname">${d.name}</div><div class="ccal">${calTxt}</div>`;
-    c.onclick=()=>openDetail(d);
+    const tempLbl = d.temp==='hot' ? 'Cal.' : d.temp==='cold' ? 'Frío' : '·';
+    const favOn = isFav(d.id);
+    c.innerHTML=`
+      <span class="num">${String(i+1).padStart(2,'0')}</span>
+      <button class="star ${favOn?'on':''}" data-id="${d.id}" aria-label="Favorito">
+        <svg viewBox="0 0 24 24"><polygon points="12,3 14.6,9.1 21,9.7 16.1,14 17.7,20.3 12,16.9 6.3,20.3 7.9,14 3,9.7 9.4,9.1"/></svg>
+      </button>
+      <div class="ill">${svgs[d.icon]||svgs.latte}</div>
+      <div class="cname">${d.name}</div>
+      <div class="ccal">${calTxt}</div>`;
+    c.querySelector('.star').onclick=(ev)=>{ev.stopPropagation();toggleFav(d.id);};
+    c.onclick=(e)=>openDetail(d, e.currentTarget);
     g.appendChild(c);
   });
 }
 
-function openDetail(d){
-  curDrink=d;curSelection=null;
+/* ——— detail ——— */
+function openDetail(d, srcEl){
+  curDrink=d; curSelection=null;
+
+  // expand-in-place origin
+  const rect = srcEl.getBoundingClientRect();
+  const detail=document.getElementById('detail');
+  const ox = rect.left + rect.width/2;
+  const oy = rect.top + rect.height/2;
+  detail.style.setProperty('--ox', ox+'px');
+  detail.style.setProperty('--oy', oy+'px');
+
+  // tint by temp
+  const tint = d.temp==='cold' ? 'cool' : (d.temp==='hot' ? 'warm' : '');
+  setTint(tint);
+
+  // populate
   document.getElementById('bigIll').innerHTML=svgs[d.icon]||svgs.latte;
   document.getElementById('dname').textContent=d.name;
   document.getElementById('ddesc').textContent=d.desc;
   document.getElementById('orderBtn').disabled=true;
-  document.getElementById('optLabel').style.display='';
+  document.getElementById('orderBtn').textContent='Enviar pedido';
+  document.getElementById('dEye').textContent = d.type==='otra' ? 'De la barra' : 'De la carta';
+  document.getElementById('dTempLbl').textContent =
+    d.temp==='hot' ? 'Servido caliente' :
+    d.temp==='cold' ? 'Servido helado' :
+    'Caliente o helado';
+
+  // sequence number from full list
+  const all=[...cafe,...otras];
+  const idx=all.findIndex(x=>x.id===d.id);
+  document.getElementById('dnum').textContent=`№ ${String(idx+1).padStart(2,'0')} · ${all.length}`;
+
   const container=document.getElementById('optContainer');
   container.innerHTML='';
+  const optLbl=document.getElementById('optLabel');
+  const optWrap=optLbl.parentElement.parentElement;
+  optWrap.style.display='';
+
   if(d.type==='cafe'){
-    document.getElementById('optLabel').textContent='Tamaño';
-    container.innerHTML=`<div class="size-row"><button class="sz-half" id="szS" onclick="selectOpt('chico')">Chico</button><button class="sz-half" id="szL" onclick="selectOpt('grande')">Grande</button></div>`;
-    document.getElementById('dcal').textContent=`~${d.cal.chico} kcal · pequeño`;
+    optLbl.textContent='Elige tamaño';
+    container.innerHTML=`
+      <div class="size-row">
+        <button class="sz-half" id="szS" onclick="selectOpt('chico')">Chico<span class="sub">~${d.cal.chico} kcal</span></button>
+        <button class="sz-half" id="szL" onclick="selectOpt('grande')">Grande<span class="sub">~${d.cal.grande} kcal</span></button>
+      </div>`;
+    document.getElementById('dcal').textContent=`Aproximadamente ${d.cal.chico}–${d.cal.grande} kcal`;
   } else if(d.variantes&&d.variantes.length>0){
-    document.getElementById('optLabel').textContent='Sabor';
-    const row=document.createElement('div');
-    row.className='opt-row';
+    optLbl.textContent='Elige sabor';
+    const col=document.createElement('div');
+    col.className='opt-col';
     d.variantes.forEach(v=>{
       const btn=document.createElement('button');
-      btn.className='sz';
-      btn.textContent=v;
+      btn.className='sz';btn.textContent=v;
       btn.onclick=()=>{
-        document.querySelectorAll('#optContainer .sz').forEach(b=>b.classList.remove('on'));
+        col.querySelectorAll('.sz').forEach(b=>b.classList.remove('on'));
         btn.classList.add('on');
         curSelection=v;
         document.getElementById('orderBtn').disabled=false;
       };
-      row.appendChild(btn);
+      col.appendChild(btn);
     });
-    container.appendChild(row);
-    document.getElementById('dcal').textContent=`~${d.cal} kcal`;
+    container.appendChild(col);
+    document.getElementById('dcal').textContent=`Aproximadamente ${d.cal} kcal`;
   } else {
-    document.getElementById('optLabel').style.display='none';
+    optWrap.style.display='none';
     curSelection=d.name;
     document.getElementById('orderBtn').disabled=false;
-    document.getElementById('dcal').textContent=`~${d.cal} kcal`;
+    document.getElementById('dcal').textContent=`Aproximadamente ${d.cal} kcal`;
   }
-  document.getElementById('home').style.display='none';
-  document.getElementById('detail').style.display='flex';
+
+  updateDetailStar();
+
+  // show detail
+  requestAnimationFrame(()=>detail.classList.add('on'));
+  detail.scrollTop=0;
 }
 
 function selectOpt(s){
@@ -194,44 +875,99 @@ function selectOpt(s){
   document.querySelectorAll('.sz-half').forEach(b=>b.classList.remove('on'));
   document.getElementById(s==='chico'?'szS':'szL').classList.add('on');
   document.getElementById('orderBtn').disabled=false;
-  document.getElementById('dcal').textContent=`~${curDrink.cal[s]} kcal · ${s==='chico'?'pequeño':'regular'}`;
+}
+
+function goHome(){
+  document.getElementById('detail').classList.remove('on');
+  setTint('');
 }
 
 async function sendOrder(){
   const btn=document.getElementById('orderBtn');
   btn.disabled=true;
-  btn.textContent='Enviando...';
-  let msg,label;
+  btn.textContent='Enviando…';
+  let msg,label,sub;
   if(curDrink.type==='cafe'){
+    label=`${curDrink.name} · ${curSelection}`;
+    sub=`~${curDrink.cal[curSelection]} kcal`;
     msg=`☕ **Maison Jenn**\nJenn quiere un **${curDrink.name}** ${curSelection} (~${curDrink.cal[curSelection]} kcal)`;
-    label=`${curDrink.name} ${curSelection}`;
   } else if(curDrink.variantes&&curDrink.variantes.length>0){
+    label=`${curDrink.name} · ${curSelection}`;
+    sub=`~${curDrink.cal} kcal`;
     msg=`🥤 **Maison Jenn**\nJenn quiere un **${curDrink.name} ${curSelection}** (~${curDrink.cal} kcal)`;
-    label=`${curDrink.name} ${curSelection}`;
   } else {
-    msg=`🥤 **Maison Jenn**\nJenn quiere **${curDrink.name}** (~${curDrink.cal} kcal)`;
     label=curDrink.name;
+    sub=`~${curDrink.cal} kcal`;
+    msg=`🥤 **Maison Jenn**\nJenn quiere **${curDrink.name}** (~${curDrink.cal} kcal)`;
   }
+
   try{
     await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({content:msg})});
-  }catch(e){}
-  document.getElementById('sentMsg').textContent=`${label} está en camino.`;
-  document.getElementById('detail').style.display='none';
-  document.getElementById('sent').style.display='flex';
-}
+  }catch(e){ /* silent */ }
 
-function goHome(){
-  document.getElementById('detail').style.display='none';
-  document.getElementById('home').style.display='block';
+  // save to history
+  saveHistory({label, sub, ts:Date.now()});
+
+  // tender note
+  const note = lovenotes[Math.floor(Math.random()*lovenotes.length)];
+  document.getElementById('sentOrder').textContent = label;
+  document.getElementById('sentMsg').innerHTML = `“${note}”<span class="em">— con amor</span>`;
+
+  // transition
+  document.getElementById('detail').classList.remove('on');
+  setTimeout(()=>document.getElementById('sent').classList.add('on'), 220);
 }
 
 function reset(){
-  document.getElementById('sent').style.display='none';
-  document.getElementById('home').style.display='block';
-  renderGrid();
+  document.getElementById('sent').classList.remove('on');
+  setTint('');
+  document.getElementById('orderBtn').textContent='Enviar pedido';
+  // back to home (detail already closed)
 }
 
-renderGrid();
+/* ——— history ——— */
+function saveHistory(entry){
+  const list=JSON.parse(localStorage.getItem('mj_history')||'[]');
+  list.unshift(entry);
+  localStorage.setItem('mj_history', JSON.stringify(list.slice(0,20)));
+}
+function openSheet(){
+  renderHistory();
+  document.getElementById('sheet').classList.add('on');
+}
+function closeSheet(){
+  document.getElementById('sheet').classList.remove('on');
+}
+function renderHistory(){
+  const list=JSON.parse(localStorage.getItem('mj_history')||'[]');
+  const body=document.getElementById('histBody');
+  if(!list.length){
+    body.innerHTML=`<div class="hist-empty">Aún sin pedidos.<br/>El primero será memorable.</div>`;
+    return;
+  }
+  body.innerHTML=`<div class="hist-list">${list.map(e=>{
+    const d=new Date(e.ts);
+    const days=['dom','lun','mar','mié','jue','vie','sáb'];
+    const hh=String(d.getHours()).padStart(2,'0');
+    const mm=String(d.getMinutes()).padStart(2,'0');
+    return `<div class="hist-row">
+      <div>
+        <div class="hist-name">${e.label}</div>
+        <div class="hist-sub">${e.sub}</div>
+      </div>
+      <div class="hist-date">${days[d.getDay()]} · ${hh}:${mm}</div>
+    </div>`;
+  }).join('')}</div>
+  <button class="hist-clear" onclick="clearHistory()">Borrar historial</button>`;
+}
+function clearHistory(){
+  if(confirm('¿Borrar el historial?')){
+    localStorage.removeItem('mj_history');
+    renderHistory();
+  }
+}
+
+init();
 </script>
 </body>
 </html>
