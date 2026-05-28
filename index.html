@@ -235,6 +235,51 @@ body{
 }
 .fav-card .fav-mark svg{width:9px;height:9px;fill:currentColor;stroke:currentColor;stroke-width:0.8}
 
+.opt-sublabel{
+  font-size:9px;letter-spacing:0.32em;text-transform:uppercase;color:var(--ink-soft);
+  text-align:center;margin-bottom:10px;font-weight:500;
+}
+.opt-stack + .opt-stack{margin-top:22px}
+
+.notes-wrap{margin-top:28px}
+.notes-input{
+  width:100%;border:1px solid var(--hair);background:transparent;
+  padding:14px 16px;
+  font-family:'Bodoni Moda',serif;font-style:italic;font-weight:400;
+  font-size:15px;color:var(--ink);resize:none;min-height:72px;
+  outline:none;line-height:1.5;
+  transition:border-color 200ms ease, background-color 700ms ease, color 400ms ease;
+}
+.notes-input::placeholder{color:var(--ink-faint);font-style:italic}
+.notes-input:focus{border-color:var(--ink)}
+
+.dprep{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--ink-faint);letter-spacing:0.04em;
+  text-align:center;margin-top:6px;
+}
+.sent-prep{
+  margin-top:14px;
+  font-size:9.5px;letter-spacing:0.32em;text-transform:uppercase;color:var(--ink-faint);
+}
+
+.hist-row{
+  display:grid;grid-template-columns:1fr auto;gap:14px;align-items:start;
+  padding:16px 0;border-top:1px solid var(--hair-soft);
+}
+.hist-actions{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.hist-notes{
+  font-family:'Bodoni Moda',serif;font-style:italic;font-size:12px;color:var(--ink-faint);
+  margin-top:4px;line-height:1.4;
+}
+.hist-reorder{
+  background:transparent;border:1px solid var(--hair);cursor:pointer;
+  font-size:9px;letter-spacing:0.28em;text-transform:uppercase;color:var(--ink);font-weight:500;
+  padding:7px 10px;
+  font-family:'Inter',sans-serif;
+}
+.hist-reorder:active{background:var(--hair-soft)}
+
 /* ——— footer note ——— */
 .foot{
   padding:34px 22px 8px;text-align:center;
@@ -559,6 +604,14 @@ html[data-mode="night"] .sheet-bg{background:rgba(0,0,0,0.6)}
         <span class="line"></span>
       </div>
       <div id="optContainer"></div>
+    <div class="notes-wrap">
+      <div class="opt-label">
+        <span class="line"></span>
+        <span class="t">Notas para el barista</span>
+        <span class="line"></span>
+      </div>
+      <textarea class="notes-input" id="notesInput" placeholder="¿Algo más? — sin azúcar, extra hielo, leche de almendra… (opcional)" maxlength="180"></textarea>
+    </div>
     </div>
     <button class="order-btn" id="orderBtn" onclick="sendOrder()" disabled>Enviar pedido</button>
     <div class="disclaim">Llegará una nota al barista en un instante.</div>
@@ -573,6 +626,7 @@ html[data-mode="night"] .sheet-bg{background:rgba(0,0,0,0.6)}
   </div>
   <div class="sent-title">En camino.</div>
   <div class="sent-order" id="sentOrder"></div>
+  <div class="sent-prep" id="sentPrep"></div>
   <div class="sent-msg" id="sentMsg"></div>
   <button class="sent-again" onclick="reset()">Pedir otro</button>
 </div>
@@ -645,7 +699,65 @@ const lovenotes=[
   'Que el día se ponga de tu lado.',
 ];
 
-let curCat='all',curDrink=null,curSelection=null;
+/* prep time (minutes) per drink */
+const prepTime={
+  espresso:2, americano:3, latte:4, capuchino:4, flatwhite:4,
+  matchate:3, matchalatte:4, matchapresso:4, matchatonic:3,
+  espressotonic:3, cloudmatcha:5, cloudespresso:5, dirtymatcha:5,
+  aguatonica:1, aguacoco:1, arizona:1, lipton:1
+};
+function getPrep(d){
+  let m = prepTime[d.id] || 3;
+  // si es bebida fría, suma un minuto por preparación con hielo
+  if(curTemp==='cold' && d.type==='cafe' && d.id!=='espresso' && d.id!=='americano') m+=1;
+  return m;
+}
+
+let curCat='all',curDrink=null,curSelection=null,curTemp=null;
+
+/* ——— chime sound ——— */
+let _audioCtx;
+function playChime(){
+  try{
+    if(!_audioCtx) _audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    if(_audioCtx.state==='suspended') _audioCtx.resume();
+    const ctx=_audioCtx;
+    const now=ctx.currentTime;
+    // gentle 3-note arpeggio (E5, G5, B5)
+    const notes=[{f:659.25,t:0},{f:783.99,t:0.13},{f:987.77,t:0.26}];
+    notes.forEach(n=>{
+      const o=ctx.createOscillator();
+      const g=ctx.createGain();
+      o.type='sine'; o.frequency.value=n.f;
+      g.gain.setValueAtTime(0, now+n.t);
+      g.gain.linearRampToValueAtTime(0.07, now+n.t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, now+n.t+1.4);
+      o.connect(g).connect(ctx.destination);
+      o.start(now+n.t); o.stop(now+n.t+1.5);
+    });
+  }catch(e){}
+}
+
+/* ——— helpers ——— */
+function checkEnable(){
+  const btn=document.getElementById('orderBtn');
+  let ok = !!curSelection;
+  if(curDrink && curDrink.temp==='both' && !curTemp) ok=false;
+  btn.disabled=!ok;
+}
+function buildLabel(){
+  const d=curDrink;
+  if(!d) return '';
+  if(d.type==='cafe'){
+    const parts=[d.name];
+    if(d.temp==='both' && curTemp) parts.push(curTemp==='hot'?'caliente':'helado');
+    if(curSelection) parts.push(curSelection);
+    return parts.join(' · ');
+  } else if(d.variantes && curSelection){
+    return `${d.name} · ${curSelection}`;
+  }
+  return d.name;
+}
 
 /* ——— favorites ——— */
 function getFavs(){ try{return JSON.parse(localStorage.getItem('mj_favs')||'[]')}catch(e){return []} }
@@ -795,6 +907,7 @@ function renderGrid(){
 /* ——— detail ——— */
 function openDetail(d, srcEl){
   curDrink=d; curSelection=null;
+  curTemp = d.temp==='both' ? null : d.temp;
 
   // expand-in-place origin
   const rect = srcEl.getBoundingClientRect();
@@ -804,9 +917,8 @@ function openDetail(d, srcEl){
   detail.style.setProperty('--ox', ox+'px');
   detail.style.setProperty('--oy', oy+'px');
 
-  // tint by temp
-  const tint = d.temp==='cold' ? 'cool' : (d.temp==='hot' ? 'warm' : '');
-  setTint(tint);
+  // tint by temp (initial)
+  updateTint();
 
   // populate
   document.getElementById('bigIll').innerHTML=svgs[d.icon]||svgs.latte;
@@ -814,14 +926,12 @@ function openDetail(d, srcEl){
   document.getElementById('ddesc').textContent=d.desc;
   document.getElementById('orderBtn').disabled=true;
   document.getElementById('orderBtn').textContent='Enviar pedido';
+  document.getElementById('notesInput').value='';
   document.getElementById('dEye').textContent = d.type==='otra' ? 'De la barra' : 'De la carta';
-  document.getElementById('dTempLbl').textContent =
-    d.temp==='hot' ? 'Servido caliente' :
-    d.temp==='cold' ? 'Servido helado' :
-    'Caliente o helado';
+  updateTempLabel();
 
   // sequence number from full list
-  const all=[...cafe,...otras];
+  const all=allDrinks();
   const idx=all.findIndex(x=>x.id===d.id);
   document.getElementById('dnum').textContent=`№ ${String(idx+1).padStart(2,'0')} · ${all.length}`;
 
@@ -832,13 +942,35 @@ function openDetail(d, srcEl){
   optWrap.style.display='';
 
   if(d.type==='cafe'){
-    optLbl.textContent='Elige tamaño';
-    container.innerHTML=`
-      <div class="size-row">
-        <button class="sz-half" id="szS" onclick="selectOpt('chico')">Chico<span class="sub">~${d.cal.chico} kcal</span></button>
-        <button class="sz-half" id="szL" onclick="selectOpt('grande')">Grande<span class="sub">~${d.cal.grande} kcal</span></button>
-      </div>`;
-    document.getElementById('dcal').textContent=`Aproximadamente ${d.cal.chico}–${d.cal.grande} kcal`;
+    const parts=[];
+    if(d.temp==='both'){
+      optLbl.textContent='Personaliza';
+      parts.push(`
+        <div class="opt-stack">
+          <div class="opt-sublabel">Temperatura</div>
+          <div class="size-row">
+            <button class="sz-half" id="tHot" onclick="selectTemp('hot')">Caliente</button>
+            <button class="sz-half" id="tCold" onclick="selectTemp('cold')">Helado</button>
+          </div>
+        </div>`);
+      parts.push(`
+        <div class="opt-stack">
+          <div class="opt-sublabel">Tamaño</div>
+          <div class="size-row">
+            <button class="sz-half" id="szS" onclick="selectOpt('chico')">Chico<span class="sub">~${d.cal.chico} kcal</span></button>
+            <button class="sz-half" id="szL" onclick="selectOpt('grande')">Grande<span class="sub">~${d.cal.grande} kcal</span></button>
+          </div>
+        </div>`);
+    } else {
+      optLbl.textContent='Elige tamaño';
+      parts.push(`
+        <div class="size-row">
+          <button class="sz-half" id="szS" onclick="selectOpt('chico')">Chico<span class="sub">~${d.cal.chico} kcal</span></button>
+          <button class="sz-half" id="szL" onclick="selectOpt('grande')">Grande<span class="sub">~${d.cal.grande} kcal</span></button>
+        </div>`);
+    }
+    container.innerHTML=parts.join('');
+    document.getElementById('dcal').textContent=`Aproximadamente ${d.cal.chico}–${d.cal.grande} kcal · listo en ~${getPrep(d)} min`;
   } else if(d.variantes&&d.variantes.length>0){
     optLbl.textContent='Elige sabor';
     const col=document.createElement('div');
@@ -850,17 +982,17 @@ function openDetail(d, srcEl){
         col.querySelectorAll('.sz').forEach(b=>b.classList.remove('on'));
         btn.classList.add('on');
         curSelection=v;
-        document.getElementById('orderBtn').disabled=false;
+        checkEnable();
       };
       col.appendChild(btn);
     });
     container.appendChild(col);
-    document.getElementById('dcal').textContent=`Aproximadamente ${d.cal} kcal`;
+    document.getElementById('dcal').textContent=`Aproximadamente ${d.cal} kcal · listo en ~${getPrep(d)} min`;
   } else {
     optWrap.style.display='none';
     curSelection=d.name;
-    document.getElementById('orderBtn').disabled=false;
-    document.getElementById('dcal').textContent=`Aproximadamente ${d.cal} kcal`;
+    document.getElementById('dcal').textContent=`Aproximadamente ${d.cal} kcal · listo en ~${getPrep(d)} min`;
+    checkEnable();
   }
 
   updateDetailStar();
@@ -870,11 +1002,42 @@ function openDetail(d, srcEl){
   detail.scrollTop=0;
 }
 
+function updateTint(){
+  const d=curDrink;
+  if(!d){ setTint(''); return; }
+  // resuelve temperatura efectiva
+  const t = d.temp==='both' ? curTemp : d.temp;
+  if(t==='hot') setTint('warm');
+  else if(t==='cold') setTint('cool');
+  else setTint('');
+}
+function updateTempLabel(){
+  const d=curDrink;
+  if(!d) return;
+  const el=document.getElementById('dTempLbl');
+  if(d.temp==='hot') el.textContent='Servido caliente';
+  else if(d.temp==='cold') el.textContent='Servido helado';
+  else if(d.temp==='both' && curTemp==='hot') el.textContent='Servido caliente';
+  else if(d.temp==='both' && curTemp==='cold') el.textContent='Servido helado';
+  else el.textContent='Caliente o helado';
+}
+
+function selectTemp(t){
+  curTemp=t;
+  document.querySelectorAll('#optContainer .opt-stack:first-child .sz-half').forEach(b=>b.classList.remove('on'));
+  document.getElementById(t==='hot'?'tHot':'tCold').classList.add('on');
+  updateTint();
+  updateTempLabel();
+  checkEnable();
+}
+
 function selectOpt(s){
   curSelection=s;
-  document.querySelectorAll('.sz-half').forEach(b=>b.classList.remove('on'));
-  document.getElementById(s==='chico'?'szS':'szL').classList.add('on');
-  document.getElementById('orderBtn').disabled=false;
+  // size-row puede ser el único o el segundo bloque; afecta solo a chico/grande
+  document.querySelectorAll('#szS, #szL').forEach(b=>b && b.classList.remove('on'));
+  const el=document.getElementById(s==='chico'?'szS':'szL');
+  if(el) el.classList.add('on');
+  checkEnable();
 }
 
 function goHome(){
@@ -886,31 +1049,59 @@ async function sendOrder(){
   const btn=document.getElementById('orderBtn');
   btn.disabled=true;
   btn.textContent='Enviando…';
-  let msg,label,sub;
-  if(curDrink.type==='cafe'){
-    label=`${curDrink.name} · ${curSelection}`;
-    sub=`~${curDrink.cal[curSelection]} kcal`;
-    msg=`☕ **Maison Jenn**\nJenn quiere un **${curDrink.name}** ${curSelection} (~${curDrink.cal[curSelection]} kcal)`;
-  } else if(curDrink.variantes&&curDrink.variantes.length>0){
-    label=`${curDrink.name} · ${curSelection}`;
-    sub=`~${curDrink.cal} kcal`;
-    msg=`🥤 **Maison Jenn**\nJenn quiere un **${curDrink.name} ${curSelection}** (~${curDrink.cal} kcal)`;
+  const d=curDrink;
+  const notes = (document.getElementById('notesInput').value||'').trim();
+  const prep = getPrep(d);
+
+  // resolved temp (for messaging + history)
+  const t = d.temp==='both' ? curTemp : d.temp;
+  const tempWord = t==='hot' ? 'caliente' : t==='cold' ? 'helado' : '';
+  const emoji = t==='cold' ? '🥤' : '☕';
+
+  let label, sub, kcalText;
+  if(d.type==='cafe'){
+    label = buildLabel();
+    kcalText = `~${d.cal[curSelection]} kcal`;
+    sub = kcalText;
+  } else if(d.variantes && d.variantes.length>0){
+    label = buildLabel();
+    kcalText = `~${d.cal} kcal`;
+    sub = kcalText;
   } else {
-    label=curDrink.name;
-    sub=`~${curDrink.cal} kcal`;
-    msg=`🥤 **Maison Jenn**\nJenn quiere **${curDrink.name}** (~${curDrink.cal} kcal)`;
+    label = d.name;
+    kcalText = `~${d.cal} kcal`;
+    sub = kcalText;
   }
+
+  // Discord message
+  let msg = `${emoji} **Maison Jenn**\n`;
+  msg += `Jenn quiere **${label}** _(${kcalText})_`;
+  if(notes) msg += `\n✍️ _“${notes}”_`;
+  msg += `\n⏱️ Listo en ~${prep} min`;
 
   try{
     await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({content:msg})});
   }catch(e){ /* silent */ }
 
-  // save to history
-  saveHistory({label, sub, ts:Date.now()});
+  // save to history (richer shape)
+  saveHistory({
+    id: d.id,
+    label, sub,
+    temp: d.temp==='both' ? curTemp : null,
+    size: d.type==='cafe' ? curSelection : null,
+    variant: (d.variantes && d.variantes.length>0) ? curSelection : null,
+    notes,
+    prep,
+    ts: Date.now()
+  });
+
+  // chime
+  playChime();
 
   // tender note
   const note = lovenotes[Math.floor(Math.random()*lovenotes.length)];
   document.getElementById('sentOrder').textContent = label;
+  document.getElementById('sentPrep').textContent = `Listo en ~${prep} min`;
   document.getElementById('sentMsg').innerHTML = `“${note}”<span class="em">— con amor</span>`;
 
   // transition
@@ -945,20 +1136,50 @@ function renderHistory(){
     body.innerHTML=`<div class="hist-empty">Aún sin pedidos.<br/>El primero será memorable.</div>`;
     return;
   }
-  body.innerHTML=`<div class="hist-list">${list.map(e=>{
+  body.innerHTML=`<div class="hist-list">${list.map((e,i)=>{
     const d=new Date(e.ts);
     const days=['dom','lun','mar','mié','jue','vie','sáb'];
     const hh=String(d.getHours()).padStart(2,'0');
     const mm=String(d.getMinutes()).padStart(2,'0');
+    const notesHtml = e.notes ? `<div class="hist-notes">“${escapeHtml(e.notes)}”</div>` : '';
     return `<div class="hist-row">
       <div>
         <div class="hist-name">${e.label}</div>
         <div class="hist-sub">${e.sub}</div>
+        ${notesHtml}
       </div>
-      <div class="hist-date">${days[d.getDay()]} · ${hh}:${mm}</div>
+      <div class="hist-actions">
+        <div class="hist-date">${days[d.getDay()]} · ${hh}:${mm}</div>
+        <button class="hist-reorder" onclick="reorder(${i})">Pedir igual</button>
+      </div>
     </div>`;
   }).join('')}</div>
   <button class="hist-clear" onclick="clearHistory()">Borrar historial</button>`;
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+
+function reorder(idx){
+  const list=JSON.parse(localStorage.getItem('mj_history')||'[]');
+  const entry=list[idx];
+  if(!entry) return;
+  const drink=allDrinks().find(d=>d.id===entry.id);
+  if(!drink) return;
+  closeSheet();
+  const src=document.getElementById('histBtn');
+  setTimeout(()=>{
+    openDetail(drink, src);
+    setTimeout(()=>{
+      if(drink.type==='cafe'){
+        if(drink.temp==='both' && entry.temp) selectTemp(entry.temp);
+        if(entry.size) selectOpt(entry.size);
+      } else if(drink.variantes && entry.variant){
+        document.querySelectorAll('#optContainer .sz').forEach(b=>{
+          if(b.textContent===entry.variant){ b.classList.add('on'); curSelection=entry.variant; checkEnable(); }
+        });
+      }
+      if(entry.notes) document.getElementById('notesInput').value=entry.notes;
+    }, 80);
+  }, 320);
 }
 function clearHistory(){
   if(confirm('¿Borrar el historial?')){
